@@ -6,6 +6,8 @@ import { Store } from './pages/Store'
 import Category from './pages/Category'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import LoginAdmin from './pages/admin/LoginAdmin'
+import Dashboard from './pages/admin/Dashboard'
 
 function App() {
 
@@ -19,6 +21,8 @@ function App() {
           <Route path='/product/:id' element={ <ProductOverview/> }/>
           <Route path='/category' element={ <Category/> }/>
           <Route path='/login' element={ <Login/> }/>
+          <Route path='/admin/login' element={ <LoginAdmin/> }/>
+          <Route path='/admin/Dashboard' element={ <Dashboard/> }/>
           <Route path='*' element={ <NotFound/> }/>
         </Routes>
       </BrowserRouter>
