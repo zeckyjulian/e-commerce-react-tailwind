@@ -7,7 +7,7 @@ import Category from './pages/Category'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import LoginAdmin from './pages/admin/LoginAdmin'
-import Dashboard from './pages/admin/Dashboard'
+import HomeAdmin from './pages/admin/HomeAdmin'
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
           <Route path='/category' element={ <Category/> }/>
           <Route path='/login' element={ <Login/> }/>
           <Route path='/admin/login' element={ <LoginAdmin/> }/>
-          <Route path='/admin/Dashboard' element={ <Dashboard/> }/>
+          <Route path='/admin/Dashboard' element={ <HomeAdmin/> }/>
           <Route path='*' element={ <NotFound/> }/>
         </Routes>
       </BrowserRouter>
