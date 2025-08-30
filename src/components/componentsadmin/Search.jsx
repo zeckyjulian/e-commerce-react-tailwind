@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FiCommand, FiSearch } from 'react-icons/fi'
+import { CommandMenu } from './CommandMenu'
 
 export const Search = () => {
+    const [open, setOpen] = useState(false)
+
   return (
     <>
         <div className='bg-stone-300 mb-4 relative rounded flex items-center px-2 py-1.5 text-sm'>
             <FiSearch className=' mr-2'/>
-            <input 
+            <input
+                onFocus={(e) => {
+                    e.target.blur();
+                    setOpen(true);
+                }}
                 type="text" 
                 placeholder='Search...'
                 className='w-full bg-transparent placeholder:text-stone-400 focus:outline-none'
@@ -16,6 +23,8 @@ export const Search = () => {
                 <FiCommand/>
             </span>
         </div>
+
+        <CommandMenu open={open} setOpen={setOpen}/>
     </>
   )
 }
