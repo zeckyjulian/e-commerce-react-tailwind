@@ -38,15 +38,15 @@ const Card = ({
     }) => {
     return (
       <div className="col-span-4 p-4 rounded border border-stone-300">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-3">
-          <div>
+        <div className="flex flex-wrap items-start justify-between mb-6 gap-3">
+          <div className='min-w-0 flex-1'>
             <h3 className="text-stone-500 mb-1 text-sm">{title}</h3>
-            <p className="text-2xl sm:text-3xl font-semibold break-words">{value}</p>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-semibold break-words leading-tight">{value}</p>
           </div>
 
-          <div className="mt-2 sm:mt-0 sm:text-right">
+          <div className="mt-2 sm:mt-0 flex-shrink-0">
             <span
-              className={`block sm:inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded ${
+              className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded ${
                 trend === "up"
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"
