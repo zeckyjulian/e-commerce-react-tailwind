@@ -37,25 +37,27 @@ const Card = ({
         period,
     }) => {
     return (
-        <div className="col-span-4 p-4 rounded border border-stone-300">
-      <div className="flex mb-8 items-start justify-between">
-        <div>
-          <h3 className="text-stone-500 mb-2 text-sm">{title}</h3>
-          <p className="text-3xl font-semibold">{value}</p>
+      <div className="col-span-4 p-4 rounded border border-stone-300">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-3">
+          <div>
+            <h3 className="text-stone-500 mb-1 text-sm">{title}</h3>
+            <p className="text-2xl sm:text-3xl font-semibold break-words">{value}</p>
+          </div>
+
+          <div className="mt-2 sm:mt-0 sm:text-right">
+            <span
+              className={`block sm:inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded ${
+                trend === "up"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {trend === "up" ? <FiTrendingUp /> : <FiTrendingDown />} {pillText}
+            </span>
+          </div>
         </div>
 
-        <span
-          className={`text-xs flex items-center gap-1 font-medium px-2 py-1 rounded ${
-            trend === "up"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {trend === "up" ? <FiTrendingUp /> : <FiTrendingDown />} {pillText}
-        </span>
+        <p className="text-xs text-stone-500">{period}</p>
       </div>
-
-      <p className="text-xs text-stone-500">{period}</p>
-    </div>
     )
 }

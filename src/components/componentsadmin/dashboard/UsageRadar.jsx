@@ -46,14 +46,14 @@ const data = [
 
 export const UsageRadar = () => {
   return (
-    <div className="col-span-4 overflow-hidden rounded border border-stone-300">
+    <div className="col-span-12 md:col-span-4 overflow-hidden rounded border border-stone-300">
       <div className="p-4">
         <h3 className="flex items-center gap-1.5 font-medium">
           <FiEye /> Usage
         </h3>
       </div>
 
-      <div className="h-64 px-4">
+      <div className="h-64 px-2 sm:px-4">
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
             <PolarGrid />
@@ -73,10 +73,7 @@ export const UsageRadar = () => {
               fill="#5b21b6"
               fillOpacity={0.2}
             />
-            <Tooltip
-              wrapperClassName="text-sm rounded"
-              labelClassName="text-xs text-stone-500"
-            />
+            <Tooltip />
             <Legend />
           </RadarChart>
         </ResponsiveContainer>

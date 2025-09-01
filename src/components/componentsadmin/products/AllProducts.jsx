@@ -2,16 +2,16 @@ import React from 'react'
 import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 
-export const RecentTransactions = () => {
+export const AllProducts = () => {
   return (
     <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
         <div className='mb-4 flex items-center justify-between flex-wrap gap-2'>
             <h3 className='flex items-center gap-1.5 font-medium'>
-                <FiDollarSign /> Recent Transactions
+                <FiDollarSign /> All Products
             </h3>
-            <Link to={`/admin/order`}>
+            <Link to={`admin/input-product`}>
                 <button className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
-                    See all
+                    Input Product
                 </button>
             </Link>
         </div>
@@ -24,6 +24,7 @@ export const RecentTransactions = () => {
                     sku="Pro 1 Month"
                     date="Aug 2nd"
                     price="$9.75"
+                    status="Shipping"
                     order={1}
                 />
                 <TableRow
@@ -31,6 +32,7 @@ export const RecentTransactions = () => {
                     sku="Pro 3 Month"
                     date="Aug 2nd"
                     price="$21.25"
+                    status="Waiting Payments"
                     order={2}
                 />
                 <TableRow
@@ -38,6 +40,7 @@ export const RecentTransactions = () => {
                     sku="Pro 1 Year"
                     date="Aug 1st"
                     price="$94.75"
+                    status="Done"
                     order={3}
                 />
                 <TableRow
@@ -45,6 +48,7 @@ export const RecentTransactions = () => {
                     sku="Pro 1 Month"
                     date="Aug 1st"
                     price="$9.44"
+                    status="Done"
                     order={4}
                 />
                 <TableRow
@@ -52,6 +56,7 @@ export const RecentTransactions = () => {
                     sku="Pro 1 Month"
                     date="Aug 1st"
                     price="$9.23"
+                    status="Done"
                     order={5}
                 />
                 <TableRow
@@ -59,6 +64,7 @@ export const RecentTransactions = () => {
                     sku="Pro 3 Month"
                     date="Jul 31st"
                     price="$22.02"
+                    status="Done"
                     order={6}
                 />
             </tbody>
@@ -75,6 +81,8 @@ const TableHead = () => {
                 <th className='text-start p-1.5'>SKU</th>
                 <th className='text-start p-1.5'>Date</th>
                 <th className='text-start p-1.5'>Price</th>
+                <th className='text-start p-1.5'>Status</th>
+                <th className='text-start p-1.5'>Action</th>
             </tr>
         </thead>
     )
@@ -85,6 +93,7 @@ const TableRow = ({
         sku,
         date,
         price,
+        status,
         order,
     }) => {
     return (
@@ -93,6 +102,19 @@ const TableRow = ({
             <td className="p-1.5">{sku}</td>
             <td className="p-1.5">{date}</td>
             <td className="p-1.5">{price}</td>
+            <td className="p-1.5">{status}</td>
+            <td className="p-1.5">
+                <Link to={`/admin/detail/id`}>
+                    <button className="inline-block rounded-md mb-1 border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700 mr-1">
+                        Edit
+                    </button>
+                </Link>
+                <Link to={`/admin/delete/id`}>
+                    <button className="inline-block rounded-md border border-transparent bg-red-500 px-2 py-2 text-center font-medium text-white hover:bg-red-700">
+                        Delete
+                    </button>
+                </Link>
+            </td>
         </tr>
     )
 }
