@@ -2,7 +2,7 @@ import { Github, InfoIcon, Linkedin } from "lucide-react"
 
 export const Footer = () => {
     return (
-        <footer className="py-12 px-4 bg-card relative border-t border-border mt-12 pt-8 flex flex-wrap justify-between items-center">
+        <footer className="h-[80px] bg-card border-t border-border flex justify-between items-center px-6">
             <p className="text-sm text-muted-foreground">
                 &copy; {new Date().getFullYear()} Zecky Julian Himawan, All rights reserved.
             </p>

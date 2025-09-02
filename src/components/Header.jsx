@@ -2,6 +2,7 @@ import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon } from "@heroicons/reac
 import DesktopNav from "./DesktopNav";
 import { useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { getCart } from "../api/cart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -9,12 +10,34 @@ function classNames(...classes) {
 
 export default function Header({ setOpen }) {
   const [user, setUser] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await getCart();
+        console.log("Cart response:", response);
+
+        // ambil array produk dari response.data
+        const cartItems = Array.isArray(response) ? response : [];
+
+        // hitung produk unik
+        setCartCount(cartItems.length);
+      } catch (error) {
+        console.error("Failed to fetch cart: ", error);
+        setCartCount(0);
+      }
+    };
+
+    if (localStorage.getItem("token")) {
+      fetchCart();
     }
   }, []);
 
@@ -78,7 +101,7 @@ export default function Header({ setOpen }) {
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none">
-                        <span className="mr-2">{user.name}</span>
+                        <span className="hidden lg:inline mr-2">{user.name}</span>
                         <img
                           className="h-8 w-8 rounded-full border"
                           src={`https://ui-avatars.com/api/?name=${user.name}`}
@@ -167,7 +190,9 @@ export default function Header({ setOpen }) {
                       aria-hidden="true"
                       className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                      {cartCount}
+                    </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div>
