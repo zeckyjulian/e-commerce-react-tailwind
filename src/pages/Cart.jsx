@@ -102,7 +102,7 @@ export default function Cart() {
                       </div>
                       <button
                         onClick={() => handleRemove(item.id)}
-                        className="text-gray-400 hover:text-red-500"
+                        className="text-2xl text-gray-400 hover:text-red-500"
                       >
                         ×
                       </button>

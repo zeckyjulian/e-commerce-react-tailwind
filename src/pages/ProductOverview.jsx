@@ -5,6 +5,7 @@ import Head from '../components/Head'
 import { useEffect, useState } from 'react'
 import { getProductById } from '../api/products'
 import { getSizes } from '../api/sizes'
+import { addToCart } from '../api/cart'
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
@@ -17,6 +18,8 @@ export default function ProductOverview() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [sizes, setSizes] = useState([]);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
       getProductById(id)
@@ -55,6 +58,23 @@ export default function ProductOverview() {
             </div>
         );
     }
+
+    const handleAddToCart = async (e) => {
+      e.preventDefault();
+
+      if (!selectedSize) {
+        alert("Please select the size first.")
+        return;
+      }
+
+      try {
+        await addToCart(product.id, selectedSize, quantity);
+        alert("Product successfully add to cart.")
+      } catch (err) {
+        console.error("Error adding to cart: ", err);
+        alert("Failed to add to cart.");
+      }
+    };
 
   return (
     <div className="bg-white">
@@ -130,7 +150,7 @@ export default function ProductOverview() {
               </div>
             </div>
 
-            <form className="mt-10">
+            <form onSubmit={handleAddToCart} className="mt-10">
               {/* Colors */}
               <div>
                 <h3 className="text-sm font-medium text-gray-900">Color</h3>
@@ -170,8 +190,10 @@ export default function ProductOverview() {
                         className="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-checked:border-indigo-600 has-checked:bg-indigo-600 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-indigo-600 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25"
                       >
                         <input
-                          name="size_size"
+                          name="size"
                           type="radio"
+                          value={size.id}
+                          onChange={() => setSelectedSize(size.id)}
                           className="absolute inset-0 appearance-none focus:outline-none disabled:cursor-not-allowed"
                         />
                         <span className="text-sm font-medium text-gray-900 uppercase group-has-checked:text-white">
