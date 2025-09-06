@@ -172,9 +172,14 @@ export default function Cart() {
                 <dd>${total.toFixed(2)}</dd>
               </div>
             </dl>
-            <button className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-              Checkout
-            </button>
+            <Link
+              to={`/checkout`}
+              state={{ items, subtotal, shipping, tax, total }}
+            >
+              <button className="mt-6 mb-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
+                Checkout
+              </button>
+            </Link>
           </div>
         )}
         </div>

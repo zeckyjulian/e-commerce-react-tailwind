@@ -11,6 +11,7 @@ import DashboardAdmin from './pages/admin/DashboardAdmin'
 import ProductsAdmin from './pages/admin/ProductsAdmin'
 import { OrderAdmin } from './pages/admin/OrderAdmin'
 import { UsersAdmin } from './pages/admin/UsersAdmin'
+import Checkout from './pages/Checkout'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/cart' element={ <Cart/> }/>
           <Route path='/product/:id' element={ <ProductOverview/> }/>
           <Route path='/category' element={ <Category/> }/>
+          <Route path='/checkout' element={ <Checkout/> }/>
           <Route path='/login' element={ <Login/> }/>
           <Route path='/admin/login' element={ <LoginAdmin/> }/>
           <Route path='/admin/dashboard' element={ <DashboardAdmin /> }/>
