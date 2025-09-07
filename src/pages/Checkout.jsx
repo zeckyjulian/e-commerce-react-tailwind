@@ -1,16 +1,43 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import Head from "../components/Head";
 import { Footer } from "../components/Footer";
+import { useEffect, useState } from "react";
+import { getProfile } from "../api/profile";
 
 export default function Checkout() {
   const location = useLocation();
   const { items = [], subtotal = 0, shipping = 0, tax = 0, total = 0 } = location.state || {};
+  const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getProfile()
+    .then((res) => {
+      if (!res.phone || !res.shipping_address) {
+        navigate("/profile", { state: {message: "Complete your profile before checkout." } });
+      } else {
+        setProfile(res);
+      }
+    })
+    .catch((err) => console.error("Error fetching profile: ", err));
+  }, [navigate]);
+
+  if (!profile) {
+    return null;
+  }
 
   return (
     <div className="bg-white">
       <Head />
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold mb-6">Checkout</h1>
+
+        <div className="bg-gray-50 p-6 rounded-lg shadow mb-8">
+          <h3 className="text-lg font-semibold">Shipping Address</h3>
+          <p className="text-sm text-gray-700 mb-2">{ profile.shipping_address }</p>
+          <h3 className="text-lg font-semibold">Phone</h3>
+          <p className="text-sm text-gray-700 mb-2">{ profile.phone }</p>
+        </div>
 
         {/* Produk */}
         <div className="bg-gray-50 p-6 rounded-lg shadow mb-8">
