@@ -3,28 +3,41 @@ import Head from "../components/Head";
 import { Footer } from "../components/Footer";
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
+import { createOrder } from "../api/orders";
 
 export default function Checkout() {
   const location = useLocation();
   const { items = [], subtotal = 0, shipping = 0, tax = 0, total = 0 } = location.state || {};
   const [profile, setProfile] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     getProfile()
-    .then((res) => {
-      if (!res.phone || !res.shipping_address) {
-        navigate("/profile", { state: {message: "Complete your profile before checkout." } });
-      } else {
-        setProfile(res);
-      }
-    })
+    .then((res) => setProfile(res))
     .catch((err) => console.error("Error fetching profile: ", err));
-  }, [navigate]);
+  }, []);
 
-  if (!profile) {
-    return null;
-  }
+  const handlePlaceOrder = async () => {
+    if (!profile?.phone || !profile?.shipping_address) {
+      navigate("/profile", { state: { message: "Please complete your profile before placing an order." } });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const order = await createOrder(paymentMethod, profile.shipping_address);
+
+      console.log("Order created", order);
+
+      navigate("/orders", { state: { message: "Order placed successfully!" } });
+    } catch (err) {
+      console.error("Error fetching order: ", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -34,9 +47,13 @@ export default function Checkout() {
 
         <div className="bg-gray-50 p-6 rounded-lg shadow mb-8">
           <h3 className="text-lg font-semibold">Shipping Address</h3>
-          <p className="text-sm text-gray-700 mb-2">{ profile.shipping_address }</p>
+          <p className="text-sm text-gray-700 mb-2">{profile?.shipping_address || (
+            <span className="text-red-500">Not Set</span>
+          )}</p>
           <h3 className="text-lg font-semibold">Phone</h3>
-          <p className="text-sm text-gray-700 mb-2">{ profile.phone }</p>
+          <p className="text-sm text-gray-700 mb-2">{profile?.phone || (
+            <span className="text-red-500">Not Set</span>
+          )}</p>
           <Link to={`/profile`}>
             <button className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 hover:bg-indigo-700">
               Change
@@ -96,21 +113,43 @@ export default function Checkout() {
           <h2 className="text-lg font-semibold mb-4">Payment Method</h2>
           <div className="space-y-3">
             <label className="flex items-center">
-              <input type="radio" name="payment" value="credit-card" defaultChecked />
+              <input 
+                type="radio" 
+                name="payment" 
+                value="credit-card" 
+                checked={paymentMethod === "credit-card"}
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+              />
               <span className="ml-2">Credit Card</span>
             </label>
             <label className="flex items-center">
-              <input type="radio" name="payment" value="bank-transfer" />
+              <input
+                type="radio"
+                name="payment"
+                value="bank-transfer"
+                checked={paymentMethod === "bank-transfer"}
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+              />
               <span className="ml-2">Bank Transfer</span>
             </label>
             <label className="flex items-center">
-              <input type="radio" name="payment" value="cod" />
+              <input
+                type="radio"
+                name="payment"
+                value="cod"
+                checked={paymentMethod === "cod"}
+                onChange={(e) => setPaymentMethod(e.target.value)} 
+              />
               <span className="ml-2">Cash on Delivery</span>
             </label>
           </div>
 
-          <button className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-            Place Order
+          <button
+            onClick={handlePlaceOrder}
+            disabled={loading}
+            className="mt-6 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+          >
+            {loading? "Placing Order..." : "Place Order"}
           </button>
         </div>
 
