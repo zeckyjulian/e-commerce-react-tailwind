@@ -37,6 +37,11 @@ export default function Checkout() {
           <p className="text-sm text-gray-700 mb-2">{ profile.shipping_address }</p>
           <h3 className="text-lg font-semibold">Phone</h3>
           <p className="text-sm text-gray-700 mb-2">{ profile.phone }</p>
+          <Link to={`/profile`}>
+            <button className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 hover:bg-indigo-700">
+              Change
+            </button>
+          </Link>
         </div>
 
         {/* Produk */}

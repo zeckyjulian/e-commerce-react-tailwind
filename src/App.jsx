@@ -12,6 +12,8 @@ import ProductsAdmin from './pages/admin/ProductsAdmin'
 import { OrderAdmin } from './pages/admin/OrderAdmin'
 import { UsersAdmin } from './pages/admin/UsersAdmin'
 import Checkout from './pages/Checkout'
+import { MyProfile } from './pages/MyProfile'
+import Register from './pages/Register'
 
 function App() {
   return (
@@ -24,7 +26,9 @@ function App() {
           <Route path='/product/:id' element={ <ProductOverview/> }/>
           <Route path='/category' element={ <Category/> }/>
           <Route path='/checkout' element={ <Checkout/> }/>
+          <Route path='/profile' element={ <MyProfile/> }/>
           <Route path='/login' element={ <Login/> }/>
+          <Route path='/register' element={ <Register/> }/>
           <Route path='/admin/login' element={ <LoginAdmin/> }/>
           <Route path='/admin/dashboard' element={ <DashboardAdmin /> }/>
           <Route path='/admin/products' element={ <ProductsAdmin /> }/>
