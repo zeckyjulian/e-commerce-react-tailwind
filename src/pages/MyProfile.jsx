@@ -4,8 +4,10 @@ import { Footer } from '../components/Footer'
 import { ChevronDownIcon } from 'lucide-react'
 import { getUser } from '../api/user'
 import { getProfile, updateProfile } from '../api/profile'
+import Forbidden from './Forbidden'
 
 export const MyProfile = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email: ""});
   const [profile, setProfile] = useState({
     phone: "",
@@ -14,28 +16,49 @@ export const MyProfile = () => {
     shipping_address: "",
     photo: "",
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [userData, profileData] = await Promise.all([
-          getUser(),
-          getProfile(),
-        ]);
-        setUser(userData);
-        setProfile(profileData || {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setIsLoggedIn(false);
+      setLoading(false);
+      return;
+    }
+
+    setIsLoggedIn(true)
+
+    Promise.all([getUser(), getProfile()])
+    .then(([userData, profileData]) => {
+      setUser(userData || {name: "", email: ""});
+      setProfile(
+        profileData || {
           phone: "",
           gender: "",
           date_of_birth: "",
           shipping_address: "",
           photo: "",
-        });
-      } catch (err) {
-        console.error("Error fetching data: ", err);
-      }
-    };
-    fetchData();
+        }
+      );
+    })
+    .catch((err) => {
+      console.error("Error fetching profile: ", err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   }, []);
+
+  if (loading) {
+    return (
+      <span className="loading loading-infinity loading-xl"></span>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return <Forbidden />
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +89,7 @@ export const MyProfile = () => {
 
           <div className='w-40 h-40 mx-auto mb-4'>
             <img
-              src="" 
+              src={`http://localhost:8000/storage/profile_photos/${profile.photo}`}
               alt=""
               className='w-full h-full rounded-lg object-cover shadow'
             />

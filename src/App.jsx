@@ -5,7 +5,6 @@ import ProductOverview from './pages/ProductOverview'
 import { Store } from './pages/Store'
 import Category from './pages/Category'
 import Login from './pages/Login'
-import NotFound from './pages/NotFound'
 import LoginAdmin from './pages/admin/LoginAdmin'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import ProductsAdmin from './pages/admin/ProductsAdmin'
@@ -14,6 +13,8 @@ import { UsersAdmin } from './pages/admin/UsersAdmin'
 import Checkout from './pages/Checkout'
 import { MyProfile } from './pages/MyProfile'
 import Register from './pages/Register'
+import NotFound from './pages/NotFound'
+import { MyOrder } from './pages/MyOrder'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/category' element={ <Category/> }/>
           <Route path='/checkout' element={ <Checkout/> }/>
           <Route path='/profile' element={ <MyProfile/> }/>
+          <Route path='/order' element={ <MyOrder/> }/>
           <Route path='/login' element={ <Login/> }/>
           <Route path='/register' element={ <Register/> }/>
           <Route path='/admin/login' element={ <LoginAdmin/> }/>
@@ -34,7 +36,7 @@ function App() {
           <Route path='/admin/products' element={ <ProductsAdmin /> }/>
           <Route path='/admin/order' element={ <OrderAdmin /> }/>
           <Route path='/admin/users' element={ <UsersAdmin /> }/>
-          <Route path='*' element={ <NotFound/> }/>
+          <Route path='*' element={ <NotFound /> }/>
         </Routes>
       </BrowserRouter>
     </>
