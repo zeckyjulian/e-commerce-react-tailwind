@@ -26,7 +26,7 @@ export default function Header({ setOpen }) {
         console.log("Cart response:", response);
 
         // ambil array produk dari response.data
-        const cartItems = Array.isArray(response) ? response : [];
+        const cartItems = response.data?.items || [];
 
         // hitung produk unik
         setCartCount(cartItems.length);

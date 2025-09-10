@@ -4,10 +4,8 @@ import { Footer } from '../components/Footer'
 import { ChevronDownIcon } from 'lucide-react'
 import { getUser } from '../api/user'
 import { getProfile, updateProfile } from '../api/profile'
-import Forbidden from './Forbidden'
 
 export const MyProfile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({name: "", email: ""});
   const [profile, setProfile] = useState({
     phone: "",
@@ -16,49 +14,28 @@ export const MyProfile = () => {
     shipping_address: "",
     photo: "",
   });
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setIsLoggedIn(false);
-      setLoading(false);
-      return;
-    }
-
-    setIsLoggedIn(true)
-
-    Promise.all([getUser(), getProfile()])
-    .then(([userData, profileData]) => {
-      setUser(userData || {name: "", email: ""});
-      setProfile(
-        profileData || {
+    const fetchData = async () => {
+      try {
+        const [userData, profileData] = await Promise.all([
+          getUser(),
+          getProfile(),
+        ]);
+        setUser(userData);
+        setProfile(profileData || {
           phone: "",
           gender: "",
           date_of_birth: "",
           shipping_address: "",
           photo: "",
-        }
-      );
-    })
-    .catch((err) => {
-      console.error("Error fetching profile: ", err);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+        });
+      } catch (err) {
+        console.error("Error fetching data: ", err);
+      }
+    };
+    fetchData();
   }, []);
-
-  if (loading) {
-    return (
-      <span className="loading loading-infinity loading-xl"></span>
-    );
-  }
-
-  if (!isLoggedIn) {
-    return <Forbidden />
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
