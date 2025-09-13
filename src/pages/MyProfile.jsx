@@ -149,7 +149,7 @@ export const MyProfile = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">Phone</label>
                 <input
                   type="text"
-                  value={profile.phone}
+                  value={profile.phone || ""}
                   onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
@@ -160,7 +160,7 @@ export const MyProfile = () => {
                 <label className="block text-sm font-medium text-gray-700">Gender</label>
                 <div className="mt-2 grid grid-cols-1">
                   <select
-                    value={profile.gender}
+                    value={profile.gender || ""}
                     onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
                     className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   >
@@ -180,7 +180,7 @@ export const MyProfile = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">Date of Birth</label>
                   <input
                     type="date"
-                    value={profile.date_of_birth}
+                    value={profile.date_of_birth || ""}
                     onChange={(e) => setProfile({ ...profile, date_of_birth: e.target.value })}
                     className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
@@ -191,7 +191,7 @@ export const MyProfile = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-700">Shipping Address</label>
                 <textarea
                   rows="3"
-                  value={profile.shipping_address}
+                  value={profile.shipping_address || ""}
                   onChange={(e) => setProfile({ ...profile, shipping_address: e.target.value })}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 ></textarea>

@@ -31,7 +31,7 @@ export default function Checkout() {
 
       console.log("Order created", order);
 
-      navigate("/orders", { state: { message: "Order placed successfully!" } });
+      navigate("/order", { state: { message: "Order placed successfully!" } });
     } catch (err) {
       console.error("Error fetching order: ", err);
     } finally {

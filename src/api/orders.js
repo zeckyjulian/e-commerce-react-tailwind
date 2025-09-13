@@ -17,6 +17,7 @@ export const getOrderDetail = async ($id) => {
             Authorization: `Bearer ${localStorage.getItem("token")}`
         },
     });
+    return response.data.data
 };
 
 export const createOrder = async (paymentMethod, shippingAddress) => {
