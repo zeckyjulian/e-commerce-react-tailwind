@@ -14,8 +14,9 @@ export const MyOrder = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-    if(!token) {
+    if(!token || role !== "user") {
       setIsLoggedIn(false);
       setLoading(false);
       return
@@ -50,7 +51,7 @@ export const MyOrder = () => {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold mb-6">My Order</h1>
         {orders.length === 0 ? (
-          <p className='text-gray-500'>Belum ada order.</p>
+          <p className='text-gray-500 min-h-144 flex justify-center items-center text-center'>No orders yet.</p>
         ) : (
           orders.map((order) => (
               <div key={order.id} className="bg-gray-50 p-6 rounded-lg shadow mb-8">

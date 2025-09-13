@@ -24,11 +24,10 @@ export default function Login() {
 
       const { token, user } = res.data;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", user.role);
-      localStorage.setItem("user", JSON.stringify(user));
-
       if (user.role === "user") {
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", user.role);
+        localStorage.setItem("user", JSON.stringify(user));
         navigate("/");
       } else {
         setError("You do not have permission to access this page.");

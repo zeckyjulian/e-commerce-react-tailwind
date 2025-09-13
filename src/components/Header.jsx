@@ -14,8 +14,11 @@ export default function Header({ setOpen }) {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const role = localStorage.getItem("role");
+    if (storedUser && role === "user") {
       setUser(JSON.parse(storedUser));
+    } else {
+      setUser(null);
     }
   }, []);
 

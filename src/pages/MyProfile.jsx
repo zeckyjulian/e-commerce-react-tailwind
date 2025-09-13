@@ -21,8 +21,9 @@ export const MyProfile = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-    if(!token) {
+    if(!token || role !== "user") {
       setIsLoggedIn(false);
       setLoading(false);
       return

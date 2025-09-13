@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import Head from "../components/Head"
 import { useEffect, useState } from "react"
 import { getProducts } from "../api/products"
+import { Footer } from "../components/Footer"
 
 export const Store = () => {
     const [products, setProducts] = useState([]);
@@ -22,10 +23,8 @@ export const Store = () => {
             <Head />
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">All Products</h2>
-                {loading ? (
-                    [...Array(8)].map((_, i) => (
-                        <div key={i} className="h-80 w-full bg-gray-200 animate-pulse rounded-md"></div>
-                    ))
+                {products.length === 0 ? (
+                    <p className='text-gray-500 h-126 flex justify-center items-center text-center'>No products yet.</p>
                 ) : (
                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {products.map((product) => (
@@ -55,6 +54,7 @@ export const Store = () => {
                     </div>
                 )}
             </div>
+            <Footer />
         </div>
     )
 }

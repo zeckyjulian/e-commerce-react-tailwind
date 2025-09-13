@@ -10,16 +10,49 @@ export default function Cart() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    const role = localStorage.getItem("role");
 
-    if (token) {
-      getCart()
-        .then((cartItems) => {
-          setItems(cartItems || []);
-        })
-        .catch((error) => console.error("Error fetching cart: ", error))
+    if (!token || role !== "user") {
+      setIsLoggedIn(false);
+      return
     }
+
+    setIsLoggedIn(true);
+
+    getCart()
+    .then((cartItems) => {
+      setItems(cartItems || []);
+    })
+    .catch((error) => console.error("Error fetching cart: ", error))
   }, []);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="bg-white">
+        <Head />
+        <div className="flex flex-col h-182 items-center justify-center text-center py-20">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Please login to view your cart or add prodcuts to cart.
+          </h2>
+          <div className="flex justify-center gap-4">
+            <Link
+              to={`/stores`}
+              className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300"
+            >
+              Continue Shopping
+            </Link>
+            <Link
+              to={`/login`}
+              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
+            >
+              Login
+            </Link>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   const handleUpdateQuantity = async (itemId, quantity) => {
     try {
@@ -55,26 +88,8 @@ export default function Cart() {
     <div className="bg-white">
       <Head />
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        {!isLoggedIn ? (
-          <div className="flex flex-col items-center justify-center text-center py-20">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Please login to view your cart or add prodcuts to cart.
-            </h2>
-            <div className="flex justify-center gap-4">
-              <Link
-                to={`/stores`}
-                className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300"
-              >
-                Continue Shopping
-              </Link>
-              <Link
-                to={`/login`}
-                className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
-              >
-                Login
-              </Link>
-            </div>
-          </div>
+        {items.length === 0 ? (
+          <p className='text-gray-500 min-h-144 flex justify-center items-center text-center'>No orders yet.</p>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-10">
           <div className="lg:col-span-2">

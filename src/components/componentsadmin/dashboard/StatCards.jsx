@@ -39,7 +39,7 @@ const Card = ({
     return (
       <div className="col-span-4 p-4 rounded border border-stone-300">
         <div className="flex flex-wrap items-start justify-between mb-6 gap-3">
-          <div className='min-w-0 flex-1'>
+          <div className='min-w-0 flex-wrap'>
             <h3 className="text-stone-500 mb-1 text-sm">{title}</h3>
             <p className="text-xl sm:text-2xl lg:text-3xl font-semibold break-words leading-tight">{value}</p>
           </div>

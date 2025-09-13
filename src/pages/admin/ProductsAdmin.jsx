@@ -1,7 +1,35 @@
 import { Sidebar } from "../../components/componentsadmin/sidebar/Sidebar";
 import { Products } from "../../components/componentsadmin/products/Products";
+import { useEffect, useState } from "react";
+import { Loading } from "../../components/Loading";
+import { Forbidden } from "../Forbidden";
 
 export default function ProductsAdmin() {
+  const [loading, setLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (!token || role !== "admin") {
+      setIsAuthorized(false);
+      setLoading(false);
+      return;
+    }
+
+    setIsAuthorized(true);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Loading />
+  }
+
+  if (!isAuthorized) {
+    return <Forbidden />
+  }
+
   return (
     <div className="bg-stone-200 min-h-screen flex">
       <Sidebar/>

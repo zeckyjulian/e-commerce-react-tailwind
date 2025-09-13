@@ -4,6 +4,7 @@ import { Footer } from "../components/Footer";
 import { useEffect, useState } from "react";
 import { getProfile } from "../api/profile";
 import { createOrder } from "../api/orders";
+import { Forbidden } from "./Forbidden";
 
 export default function Checkout() {
   const location = useLocation();
@@ -11,13 +12,29 @@ export default function Checkout() {
   const [profile, setProfile] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if(!token || role !== "user") {
+      setIsLoggedIn(false);
+      setLoading(false);
+      return
+    }
+
+    setIsLoggedIn(true);
+
     getProfile()
     .then((res) => setProfile(res))
     .catch((err) => console.error("Error fetching profile: ", err));
   }, []);
+
+  if (!isLoggedIn) {
+    return <Forbidden />
+  }
 
   const handlePlaceOrder = async () => {
     if (!profile?.phone || !profile?.shipping_address) {
