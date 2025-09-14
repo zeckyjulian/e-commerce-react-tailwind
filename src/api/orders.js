@@ -11,6 +11,15 @@ export const getOrders = async () => {
     return response.data.data;
 };
 
+export const getAllOrders = async () => {
+    const response = await axios.get(`${API_URL}/admin/orders`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    return response.data.data;
+};
+
 export const getOrderDetail = async ($id) => {
     const response = await axios.get(`${API_URL}/orders/${id}`, {
         headers: {
