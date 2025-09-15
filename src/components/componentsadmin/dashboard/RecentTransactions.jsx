@@ -47,7 +47,7 @@ export const RecentTransactions = () => {
                     ) : orders.length === 0 ? (
                         <tr>
                             <td colSpan="8" className="text-center py-4 text-stone-500">
-                                Tidak ada transaksi
+                                No transaction
                             </td>
                         </tr>
                     ) : (
@@ -76,7 +76,7 @@ const TableHead = () => {
     return (
         <thead>
             <tr className='text-sm font-normal text-stone-500'>
-                <th className='text-start p-1.5'>No.</th>
+                <th className='text-start p-1.5'>#</th>
                 <th className='text-start p-1.5'>Customer Name</th>
                 <th className='text-start p-1.5'>Product Name</th>
                 <th className='text-start p-1.5'>Payment Method</th>

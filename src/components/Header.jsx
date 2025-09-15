@@ -25,11 +25,8 @@ export default function Header({ setOpen }) {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const response = await getCart();
-        console.log("Cart response:", response);
-
-        // ambil array produk dari response.data
-        const cartItems = response.data?.items || [];
+        const cartItems = await getCart();
+        console.log("Cart response:", cartItems);
 
         // hitung produk unik
         setCartCount(cartItems.length);
