@@ -3,6 +3,7 @@ import Head from "../components/Head"
 import { useEffect, useState } from "react"
 import { getProducts } from "../api/products"
 import { Footer } from "../components/Footer"
+import { Loading } from "../components/Loading"
 
 export const Store = () => {
     const [products, setProducts] = useState([]);
@@ -17,6 +18,10 @@ export const Store = () => {
         .catch((error) => console.error("Error fetching products:", error))
         .finally(() => setLoading(false));
     }, []);
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <div className="bg-white">

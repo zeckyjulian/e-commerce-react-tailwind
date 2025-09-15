@@ -1,76 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 
 export const AllProducts = () => {
-  return (
-    <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
-        <div className='mb-4 flex items-center justify-between flex-wrap gap-2'>
-            <h3 className='flex items-center gap-1.5 font-medium'>
-                <FiDollarSign /> All Products
-            </h3>
-            <Link to={`admin/input-product`}>
-                <button className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
-                    Input Product
-                </button>
-            </Link>
-        </div>
-        <table className='w-full table-auto'>
-            <TableHead />
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-            <tbody>
-                <TableRow
-                    cusId="#48149"
-                    sku="Pro 1 Month"
-                    date="Aug 2nd"
-                    price="$9.75"
-                    status="Shipping"
-                    order={1}
-                />
-                <TableRow
-                    cusId="#1942s"
-                    sku="Pro 3 Month"
-                    date="Aug 2nd"
-                    price="$21.25"
-                    status="Waiting Payments"
-                    order={2}
-                />
-                <TableRow
-                    cusId="#4192"
-                    sku="Pro 1 Year"
-                    date="Aug 1st"
-                    price="$94.75"
-                    status="Done"
-                    order={3}
-                />
-                <TableRow
-                    cusId="#99481"
-                    sku="Pro 1 Month"
-                    date="Aug 1st"
-                    price="$9.44"
-                    status="Done"
-                    order={4}
-                />
-                <TableRow
-                    cusId="#1304"
-                    sku="Pro 1 Month"
-                    date="Aug 1st"
-                    price="$9.23"
-                    status="Done"
-                    order={5}
-                />
-                <TableRow
-                    cusId="#1304"
-                    sku="Pro 3 Month"
-                    date="Jul 31st"
-                    price="$22.02"
-                    status="Done"
-                    order={6}
-                />
-            </tbody>
-        </table>
-    </div>
-  )
+    return (
+        <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
+            <div className='mb-4 flex items-center justify-between flex-wrap gap-2'>
+                <h3 className='flex items-center gap-1.5 font-medium'>
+                    <FiDollarSign /> All Products
+                </h3>
+                <Link to={`admin/input-product`}>
+                    <button className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
+                        Input Product
+                    </button>
+                </Link>
+            </div>
+            <table className='w-full table-auto'>
+                <TableHead />
+
+                <tbody>
+                    <TableRow
+                        cusId="#48149"
+                        sku="Pro 1 Month"
+                        date="Aug 2nd"
+                        price="$9.75"
+                        status="Shipping"
+                        order={1}
+                    />
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 const TableHead = () => {
