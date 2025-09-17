@@ -11,6 +11,15 @@ export const getUser = async () => {
     return response.data.data;
 }
 
+export const createUser = async (payload) => {
+    const response = await axios.post(`${API_URL}/users`, payload, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    return response.data.data;
+}
+
 export const getUserById = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.id;
@@ -25,4 +34,22 @@ export const getUserById = async () => {
         },
     });
     return response.data.data;
+}
+
+export const updateUser = async (id, payload) => {
+    const response = await axios.put(`${API_URL}/user/${id}`, payload, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    return response.data.data;
+}
+
+export const deleteUser = async (id) => {
+    const response = await axios.delete(`${API_URL}/user/${id}`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    return response.data.data
 }

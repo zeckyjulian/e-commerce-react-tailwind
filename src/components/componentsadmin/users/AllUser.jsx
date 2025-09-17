@@ -2,25 +2,98 @@ import React, { useEffect, useState } from 'react'
 import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { Loading } from '../../Loading'
-import { getUser } from '../../../api/user'
+import { createUser, deleteUser, getUser, updateUser } from '../../../api/user'
+import { ConfirmModal, UserModal } from './UserModal'
+import { Toast } from '../../Toast'
 
 export const AllUsers = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [userData, setUserData] = useState({ name: "", email: "" });
+    const [toast, setToast] = useState(null);
+    const [deleteId, setDeleteId] = useState(null);
+    const [confirmOpen, setConfirmOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getUser();
-                setUsers(data);
-            } catch (err) {
-                console.error("Error fetching data: ", err);
-            } finally {
-                setLoading(false);
+    const fetchUsers = async () => {
+        try {
+            const data = await getUser();
+            setUsers(data);
+        } catch (err) {
+            console.error("Error fetching data: ", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchUsers(); }, []);
+
+    const handleAdd = () => {
+        setUserData({ name: "", email: "" });
+        setModalOpen(true);
+    };
+
+    const handleEdit = (user) => {
+        setUserData(user);
+        setModalOpen(true);
+    };
+
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setConfirmOpen(true);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            if (userData.id) {
+                await updateUser(userData.id, userData);
+                setToast({
+                    message: "User data updated successfully.",
+                    type: "success"
+                });
+            } else {
+                await createUser(userData);
+                setToast({
+                    message: "User data create successfully.",
+                    type: "success"
+                });
             }
-        };
-        fetchData();
-    }, []);
+            fetchUsers();
+        } catch (err) {
+            console.error("Error saving user: ", err);
+            setToast({
+                message: "Error saving user.",
+                type: "error"
+            });
+        } finally {
+            setModalOpen(false);
+        }
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await deleteUser(deleteId);
+            setToast({
+                message: "User deleted successfully",
+                type: "success"
+            });
+            fetchUsers();
+        } catch (err) {
+            console.error("Error deleting user: ", err);
+            setToast({
+                message: "Error deleting user.",
+                type: "error",
+            });
+        } finally {
+            setConfirmOpen(false);
+            setDeleteId(null);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setUserData({ name: "", email: "" });
+        setModalOpen(false);
+    }
 
     return (
         <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
@@ -28,11 +101,9 @@ export const AllUsers = () => {
                 <h3 className='flex items-center gap-1.5 font-medium'>
                     <FiDollarSign /> All Users
                 </h3>
-                <Link to={`admin/input-product`}>
-                    <button className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
-                        Input User
-                    </button>
-                </Link>
+                <button onClick={handleAdd} className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
+                    Input User
+                </button>
             </div>
             <table className='w-full table-auto'>
                 <TableHead />
@@ -62,11 +133,36 @@ export const AllUsers = () => {
                                 dateBirth={user.profile?.date_of_birth  || "Not filled in yet"}
                                 shipping={user.profile?.shipping_address  || "Not filled in yet"}
                                 order={index}
+                                onEdit={() => handleEdit(user)}
+                                onDelete={() => handleDelete(user.id)}
                             />
                         ))
                     )}
                 </tbody>
             </table>
+
+            <UserModal 
+                isOpen={modalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleSubmit}
+                userData={userData}
+                setUserData={setUserData}
+            />
+
+            <ConfirmModal 
+                isOpen={confirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={handleDeleteConfirm}
+                message="Are you sure to delete this user?"
+            />
+
+            {toast && (
+                <Toast 
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     )
 }
@@ -97,6 +193,8 @@ const TableRow = ({
         dateBirth,
         shipping,
         order,
+        onEdit,
+        onDelete
     }) => {
 
     const renderField = (value) => {
@@ -118,16 +216,12 @@ const TableRow = ({
             <td className="p-1.5">{renderField(dateBirth)}</td>
             <td className="p-1.5">{renderField(shipping)}</td>
             <td className="p-1.5">
-                <Link to={`/admin/detail/id`}>
-                    <button className="inline-block rounded-md mb-1 border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700 mr-1">
-                        Edit
-                    </button>
-                </Link>
-                <Link to={`/admin/delete/id`}>
-                    <button className="inline-block rounded-md border border-transparent bg-red-500 px-2 py-2 text-center font-medium text-white hover:bg-red-700">
-                        Delete
-                    </button>
-                </Link>
+                <button onClick={onEdit} className="inline-block rounded-md mb-1 border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700 mr-1">
+                    Edit
+                </button>
+                <button onClick={onDelete} className="inline-block rounded-md border border-transparent bg-red-500 px-2 py-2 text-center font-medium text-white hover:bg-red-700">
+                    Delete
+                </button>
             </td>
         </tr>
     );
