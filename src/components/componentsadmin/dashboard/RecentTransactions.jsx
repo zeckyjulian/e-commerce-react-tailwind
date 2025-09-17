@@ -58,7 +58,7 @@ export const RecentTransactions = () => {
                                 cusName={order.user?.name}
                                 productName={order.items?.map(item => `${item.product.product_name} (${item.size?.size_name})`).join(", ")}
                                 payMethod={order.payment_method}
-                                shipping={order.payment_method}
+                                shipping={order.shipping_address}
                                 total={order.total}
                                 status={order.status}
                                 date={order.date_of_buy}
