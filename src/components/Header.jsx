@@ -3,6 +3,7 @@ import DesktopNav from "./DesktopNav";
 import { useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { getCart } from "../api/cart";
+import { getProfile } from "../api/profile";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +12,7 @@ function classNames(...classes) {
 export default function Header({ setOpen }) {
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
+  const [profile, setProfile] = useState({ photo: "" });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -39,6 +41,18 @@ export default function Header({ setOpen }) {
     if (localStorage.getItem("token")) {
       fetchCart();
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchDataProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        setProfile(profileData || { photo: "" });
+      } catch (err) {
+        console.error("Error fetching profile: ", err);
+      }
+    }
+    fetchDataProfile();
   }, []);
 
   const handleLogout = () => {
@@ -104,7 +118,11 @@ export default function Header({ setOpen }) {
                         <span className="hidden lg:inline mr-2">{user.name}</span>
                         <img
                           className="h-8 w-8 rounded-full border"
-                          src={`https://ui-avatars.com/api/?name=${user.name}`}
+                          src={
+                            profile.photo
+                              ? `http://localhost:8000/storage/profile_photos/${profile.photo}`
+                              : `https://ui-avatars.com/api/?name=${user.name}`
+                          }
                           alt="avatar"
                         />
                       </Menu.Button>

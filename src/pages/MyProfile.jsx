@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Head from '../components/Head'
 import { Footer } from '../components/Footer'
 import { ChevronDownIcon } from 'lucide-react'
-import { getUser } from '../api/user'
+import { getUserById } from '../api/user'
 import { getProfile, updateProfile } from '../api/profile'
 import { Loading } from '../components/Loading'
 import { Forbidden } from './Forbidden'
@@ -34,7 +34,7 @@ export const MyProfile = () => {
     const fetchData = async () => {
       try {
         const [userData, profileData] = await Promise.all([
-          getUser(),
+          getUserById(),
           getProfile(),
         ]);
         setUser(userData);
