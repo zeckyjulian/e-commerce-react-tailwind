@@ -1,26 +1,55 @@
 import React, { useEffect, useState } from 'react'
 import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
-import { getAllOrders } from '../../../api/orders';
+import { getAllOrders, updateOrder } from '../../../api/orders';
 import { Loading } from '../../Loading';
+import { OrderModal } from './OrderModal';
+import { Toast } from '../../Toast';
 
 export const AllTransactions = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [orderData, setOrderData] = useState({});
+    const [toast, setToast] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getAllOrders();
-                setOrders(data);
-            } catch (err) {
-                console.error("Error fetching data: ", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+    const fetchOrder = async () => {
+        try {
+            const data = await getAllOrders();
+            setOrders(data);
+        } catch (err) {
+            console.error("Error fetching data: ", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchOrder(); }, []);
+
+    const handleOpenDetail = (order) => {
+        setOrderData(order);
+        setModalOpen(true);
+    }
+
+    const handleSubmitOrder = async () => {
+        try {
+            await updateOrder(orderData.id, orderData.status);
+            console.log("Order status updated successfully: ", orderData);
+            setToast({
+                message: "Order status updated successfully!",
+                type: "success",
+            });
+            fetchOrder();
+        } catch (err) {
+            console.error("Error updating order: ", err);
+            setToast({
+                message: "Error updating order!",
+                type: "error",
+            });
+        } finally {
+            setModalOpen(false);
+        }
+    }
 
     return (
         <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
@@ -57,12 +86,29 @@ export const AllTransactions = () => {
                                 total={order.total}
                                 status={order.status}
                                 date={order.date_of_buy}
+                                onDetail={() => handleOpenDetail(order)}
                                 order={index}
                             />
                         ))
                     )}
                 </tbody>
             </table>
+
+            <OrderModal 
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                onSubmit={handleSubmitOrder}
+                orderData={orderData}
+                setOrderData={setOrderData}
+            />
+
+            {toast && (
+                <Toast 
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     )
 }
@@ -94,6 +140,7 @@ const TableRow = ({
         total,
         status,
         date,
+        onDetail,
         order,
     }) => {
     return (
@@ -107,11 +154,9 @@ const TableRow = ({
             <td className="p-1.5">{status}</td>
             <td className="p-1.5">{date}</td>
             <td className="p-1.5">
-                <Link to={`/admin/detail/id`}>
-                    <button className="inline-block rounded-md border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700">
-                        Detail
-                    </button>
-                </Link>
+                <button onClick={onDetail} className="inline-block rounded-md border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700">
+                    Detail
+                </button>
             </td>
         </tr>
     )

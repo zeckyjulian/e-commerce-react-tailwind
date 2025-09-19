@@ -22,33 +22,45 @@ export const UserModal = ({ isOpen, onClose, onSubmit, userData, setUserData }) 
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-3 mt-4">
-          <input
-            type="text"
-            name="name"
-            value={userData.name || ""}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className="input input-bordered w-full"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            value={userData.email || ""}
-            onChange={handleChange}
-            placeholder="Email"
-            className="input input-bordered w-full"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            value={userData.password || ""}
-            onChange={handleChange}
-            placeholder="Password"
-            className="input input-bordered w-full"
-            required={!userData.id}
-          />
+          <fieldset className="fieldset">
+            <div>
+              <legend className="fieldset-legend">Enter a Full Name</legend>
+              <input
+                type="text"
+                name="name"
+                value={userData.name || ""}
+                onChange={handleChange}
+                placeholder="Full Name"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <legend className="fieldset-legend">Enter User E-mail</legend>
+              <input
+                type="email"
+                name="email"
+                value={userData.email || ""}
+                onChange={handleChange}
+                placeholder="Email"
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            <div>
+              <legend className="fieldset-legend">Enter a Password</legend>
+              <input
+                type="password"
+                name="password"
+                value={userData.password || ""}
+                onChange={handleChange}
+                placeholder="Password"
+                className="input input-bordered w-full"
+                required={!userData.id}
+              />
+              <p className="label">{userData?.id ? "Optional" : ""}</p>
+            </div>
+          </fieldset>
           {/* Tambahkan field lain sesuai kebutuhan */}
           <div className="modal-action">
             <button type="submit" className="btn btn-primary">
@@ -70,7 +82,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, message }) => {
   return (
     <dialog open className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Konfirmasi</h3>
+        <h3 className="font-bold text-lg">Confirm</h3>
         <p className="py-4">{message}</p>
         <div className="modal-action">
           <button

@@ -43,7 +43,7 @@ export const createOrder = async (paymentMethod, shippingAddress) => {
 
 export const updateOrder = async (id, status) => {
     const response = await axios.put(
-        `${API_URL}/orders/${id}/status`,
+        `${API_URL}/admin/orders/${id}/status`,
         { status },
         {
             headers: {
