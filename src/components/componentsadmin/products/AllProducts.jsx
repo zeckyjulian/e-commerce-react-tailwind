@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { FiPackage } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { Loading } from '../../Loading';
-import { getProducts } from '../../../api/products';
+import { createProduct, deleteProduct, getProducts, updateProduct } from '../../../api/products';
+import { ConfirmModalProduct, ProductModal } from './ProductModal';
+import { Toast } from '../../Toast';
 
 export const AllProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [productData, setProductData] = useState({ product_name: "", image: "", category_id: "", color: "", price: "", description: "" });
+    const [toast, setToast] = useState(null);
+    const [deleteId, setDeleteId] = useState(null);
+    const [confirmOpen, setConfirmOpen] = useState(false);
 
     const fetchProducts = (page = 1) => {
         getProducts(page)
@@ -26,17 +33,82 @@ export const AllProducts = () => {
         fetchProducts();
     }, []);
 
+    const handleAdd = () => {
+        setProductData({ product_name: "", image: "", category_id: "", color: "", price: "", description: "" });
+        setModalOpen(true);
+    };
+
+    const handleEdit = (product) => {
+        setProductData(product);
+        setModalOpen(true);
+    };
+
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setConfirmOpen(true);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            if (productData.id) {
+                await updateProduct(productData.id, productData);
+                setToast({
+                    message: "Product data updated successfully.",
+                    type: "success"
+                });
+            } else {
+                await createProduct(productData);
+                setToast({
+                    message: "Product data create successfully.",
+                    type: "success"
+                });
+            }
+            fetchProducts();
+        } catch (err) {
+            console.error("Error saving product: ", err);
+            setToast({
+                message: "Error saving product.",
+                type: "error"
+            });
+        } finally {
+            setModalOpen(false);
+        }
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await deleteProduct(deleteId);
+            setToast({
+                message: "Product deleted successfully",
+                type: "success"
+            });
+            fetchProducts();
+        } catch (err) {
+            console.error("Error deleting product: ", err);
+            setToast({
+                message: "Error deleting product.",
+                type: "error",
+            });
+        } finally {
+            setConfirmOpen(false);
+            setDeleteId(null);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setProductData({ product_name: "", image: "", category_id: "", color: "", price: "", description: "" });
+        setModalOpen(false);
+    }
+
     return (
         <div className='col-span-12 p-4 rounded border border-stone-300 overflow-x-auto'>
             <div className='mb-4 flex items-center justify-between flex-wrap gap-2'>
                 <h3 className='flex items-center gap-1.5 font-medium'>
                     <FiPackage /> All Products
                 </h3>
-                <Link to={`admin/input-product`}>
-                    <button className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
-                        Input Product
-                    </button>
-                </Link>
+                <button onClick={handleAdd} className='flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded'>
+                    Input Product
+                </button>
             </div>
             <table className='w-full table-auto'>
                 <TableHead />
@@ -59,7 +131,7 @@ export const AllProducts = () => {
                             <TableRow
                                 key={product.id}
                                 no={(currentPage - 1) * 20 + (index + 1)}
-                                image={`http://localhost:8000/products/${product.image}`}
+                                image={`http://localhost:8000/storage/products/${product.image}`}
                                 productName={product.product_name}
                                 category={product.category?.category_name}
                                 color={product.color}
@@ -69,6 +141,8 @@ export const AllProducts = () => {
                                         ? product.description.split(" ").slice(0, 5).join(" ") + "..."
                                         : ""
                                 }
+                                onEdit={() => handleEdit(product)}
+                                onDelete={() => handleDelete(product.id)}
                                 order={index}
                             />
                         ))
@@ -98,6 +172,29 @@ export const AllProducts = () => {
                     Next
                 </button>
             </div>
+
+            <ProductModal 
+                isOpen={modalOpen}
+                onClose={handleCloseModal}
+                onSubmit={handleSubmit}
+                productData={productData}
+                setProductData={setProductData}
+            />
+
+            <ConfirmModalProduct
+                isOpen={confirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={handleDeleteConfirm}
+                message="Are you sure you want to delete this product?"
+            />
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
         </div>
     )
 }
@@ -128,6 +225,8 @@ const TableRow = ({
         price,
         description,
         order,
+        onEdit,
+        onDelete,
     }) => {
     return (
         <tr className={order % 2 ? "bg-stone-100 text-sm" : "text-sm"}>
@@ -141,16 +240,12 @@ const TableRow = ({
             <td className="p-1.5">{price}</td>
             <td className="p-1.5">{description}</td>
             <td className="p-1.5">
-                <Link to={`/admin/detail/id`}>
-                    <button className="inline-block rounded-md mb-1 border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700 mr-1">
-                        Edit
-                    </button>
-                </Link>
-                <Link to={`/admin/delete/id`}>
-                    <button className="inline-block rounded-md border border-transparent bg-red-500 px-2 py-2 text-center font-medium text-white hover:bg-red-700">
-                        Delete
-                    </button>
-                </Link>
+                <button onClick={onEdit} className="inline-block rounded-md mb-1 border border-transparent bg-indigo-600 px-2 py-2 text-center font-medium text-white hover:bg-indigo-700 mr-1">
+                    Edit
+                </button>
+                <button onClick={onDelete} className="inline-block rounded-md border border-transparent bg-red-500 px-2 py-2 text-center font-medium text-white hover:bg-red-700">
+                    Delete
+                </button>
             </td>
         </tr>
     )

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { FiDollarSign } from 'react-icons/fi'
 import { Loading } from '../../Loading'
 import { createUser, deleteUser, getUser, updateUser } from '../../../api/user'
 import { ConfirmModal, UserModal } from './UserModal'

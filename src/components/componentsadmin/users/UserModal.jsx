@@ -1,4 +1,3 @@
-// src/components/UserModal.jsx
 import React from "react";
 
 export const UserModal = ({ isOpen, onClose, onSubmit, userData, setUserData }) => {
