@@ -28,7 +28,7 @@ export const ProductList = () => {
                         <Link to={`/product/${product.id}`}>
                             <img
                                 alt={product.product_name}
-                                src={`http://localhost:8000/products/${product.image}`}
+                                src={`http://localhost:8000/storage/products/${product.image}`}
                                 className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
                             />
                         </Link>

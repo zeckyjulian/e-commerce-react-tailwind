@@ -105,7 +105,7 @@ export default function ProductOverview() {
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-8 lg:px-8">
             <img
               alt={product.product_name}
-              src={`http://localhost:8000/products/${product.image}`}
+              src={`http://localhost:8000/storage/products/${product.image}`}
               className="row-span-2 aspect-4/5 size-full object-cover sm:rounded-lg lg:aspect-3/4"
             />
           </div>

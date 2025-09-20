@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FiArrowUpRight, FiDollarSign, FiMoreHorizontal } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { FiDollarSign } from 'react-icons/fi'
 import { getAllOrders, updateOrder } from '../../../api/orders';
 import { Loading } from '../../Loading';
 import { OrderModal } from './OrderModal';
@@ -68,7 +67,7 @@ export const AllTransactions = () => {
                                 <Loading />
                             </td>
                         </tr>
-                    ) : orders.length === 0 ? (
+                    ) : !orders || orders.length === 0 ? (
                         <tr>
                             <td colSpan="8" className="text-center py-4 text-stone-500">
                                 No transaction

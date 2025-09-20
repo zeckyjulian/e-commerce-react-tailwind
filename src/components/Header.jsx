@@ -45,6 +45,11 @@ export default function Header({ setOpen }) {
 
   useEffect(() => {
     const fetchDataProfile = async () => {
+      const token = localStorage.getItem("token");
+      const role = localStorage.getItem("role");
+
+      if (!token || role !== "user") return;
+
       try {
         const profileData = await getProfile();
         setProfile(profileData || { photo: "" });

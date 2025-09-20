@@ -30,7 +30,7 @@ export const OrderModal = ({ isOpen, onClose, onSubmit, orderData, setOrderData 
                 <img
                 src={
                     item.product?.image
-                    ? `http://localhost:8000/products/${item.product.image}`
+                    ? `http://localhost:8000/storage/products/${item.product.image}`
                     : "https://via.placeholder.com/100"
                 }
                 alt={item.product?.product_name || "product"}

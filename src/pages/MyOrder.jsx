@@ -65,7 +65,7 @@ export const MyOrder = () => {
                   {order.items.map((item) => (
                     <li className="flex py-4">
                       <img
-                        src={`http://localhost:8000/products/${item.product.image}`}
+                        src={`http://localhost:8000/storage/products/${item.product.image}`}
                         alt={item.product.name}
                         className="h-20 w-20 rounded-md object-cover"
                       />
