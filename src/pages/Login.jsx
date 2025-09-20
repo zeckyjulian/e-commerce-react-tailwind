@@ -17,7 +17,7 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/login", {
+      const res = await axios.post("https://e-commerce-laravel-api-production.up.railway.app/api/login", {
         email,
         password,
       });

@@ -85,7 +85,7 @@ export default function Checkout() {
             {items.map((item) => (
               <li key={item.id} className="flex py-4">
                 <img
-                  src={`http://localhost:8000/storage/products/${item.image}`}
+                  src={`https://e-commerce-laravel-api-production.up.railway.app/storage/products/${item.image}`}
                   alt={item.product_name}
                   className="h-20 w-20 rounded-md object-cover"
                 />

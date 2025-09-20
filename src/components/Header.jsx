@@ -125,7 +125,7 @@ export default function Header({ setOpen }) {
                           className="h-8 w-8 rounded-full border"
                           src={
                             profile.photo
-                              ? `http://localhost:8000/storage/profile_photos/${profile.photo}`
+                              ? `https://e-commerce-laravel-api-production.up.railway.app/storage/profile_photos/${profile.photo}`
                               : `https://ui-avatars.com/api/?name=${user.name}`
                           }
                           alt="avatar"

@@ -67,7 +67,7 @@ export const ProductModal = ({ isOpen, onClose, onSubmit, productData, setProduc
                         src={
                             productData.image instanceof File
                              ? URL.createObjectURL(productData.image)
-                             : `http://localhost:8000/storage/products/${productData.image}`
+                             : `https://e-commerce-laravel-api-production.up.railway.app/storage/products/${productData.image}`
                         }
                         alt={productData.product_name}
                         className="w-28 h-28 object-cover rounded"

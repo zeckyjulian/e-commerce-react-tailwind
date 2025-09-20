@@ -131,7 +131,7 @@ export const AllProducts = () => {
                             <TableRow
                                 key={product.id}
                                 no={(currentPage - 1) * 20 + (index + 1)}
-                                image={`http://localhost:8000/storage/products/${product.image}`}
+                                image={`https://e-commerce-laravel-api-production.up.railway.app/storage/products/${product.image}`}
                                 productName={product.product_name}
                                 category={product.category?.category_name}
                                 color={product.color}

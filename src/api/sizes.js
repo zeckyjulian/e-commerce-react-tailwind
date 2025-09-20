@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = "https://e-commerce-laravel-api-production.up.railway.app/api";
 
 export const getSizes = async () => {
   const response = await axios.get(`${API_URL}/sizes`);

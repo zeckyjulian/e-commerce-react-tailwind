@@ -49,7 +49,7 @@ export const Store = () => {
                                 <Link to={`/product/${product.id}`}>
                                     <img
                                         alt={product.product_name}
-                                        src={`http://localhost:8000/storage/products/${product.image}`}
+                                        src={`https://e-commerce-laravel-api-production.up.railway.app/storage/products/${product.image}`}
                                         loading="lazy"
                                         className="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
                                     />

@@ -117,7 +117,7 @@ export default function Cart() {
               {items.map((item) => (
                 <li key={item.id} className="flex py-6">
                   <img
-                    src={`http://localhost:8000/storage/products/${item.image}`}
+                    src={`https://e-commerce-laravel-api-production.up.railway.app/storage/products/${item.image}`}
                     alt={item.product_name}
                     className="h-28 w-28 rounded-md object-cover"
                   />
