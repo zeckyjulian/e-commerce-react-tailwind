@@ -49,7 +49,7 @@ export const updateProduct = async (id, payload) => {
 
   formData.append('_method', 'PUT');
 
-  const response = await axios.put(`${API_URL}/admin/product/${id}`, formData, {
+  const response = await axios.post(`${API_URL}/admin/product/${id}`, formData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       'Content-Type': 'multipart/form-data',
@@ -64,5 +64,5 @@ export const deleteProduct = async (id) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
   });
-  return response.data.data
+  return response.data
 }
