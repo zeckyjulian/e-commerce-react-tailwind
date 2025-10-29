@@ -65,7 +65,7 @@ export const MyOrder = () => {
                   {order.items.map((item) => (
                     <li className="flex py-4">
                       <img
-                        src={`https://e-commerce-laravel-api-production.up.railway.app/storage/products/${item.product.image}`}
+                        src={`https://octopus-app-api-b2t7o.ondigitalocean.app/storage/products/${item.product.image}`}
                         alt={item.product.name}
                         className="h-20 w-20 rounded-md object-cover"
                       />

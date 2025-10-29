@@ -17,7 +17,7 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("https://e-commerce-laravel-api-production.up.railway.app/api/login", {
+      const res = await axios.post("https://octopus-app-api-b2t7o.ondigitalocean.app/api/login", {
         email,
         password,
       });

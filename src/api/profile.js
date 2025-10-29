@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://e-commerce-laravel-api-production.up.railway.app/api';
+const API_URL = 'https://octopus-app-api-b2t7o.ondigitalocean.app/api';
 
 export const getProfile = async () => {
     const user = JSON.parse(localStorage.getItem("user"));

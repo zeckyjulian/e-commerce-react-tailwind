@@ -25,7 +25,7 @@ export default function Register() {
     }
 
     try {
-      const res = await axios.post("https://e-commerce-laravel-api-production.up.railway.app/api/register", {
+      const res = await axios.post("https://octopus-app-api-b2t7o.ondigitalocean.app/api/register", {
         name,
         email,
         password,
